@@ -56,6 +56,21 @@ class MySQLConnector:
             print("Error:", err)
         finally: 
             cursor.close()
+
+    def delete_data_by_range_day(self, table, start,end):
+        try:
+            if not self.connection:
+                self.connect()
+            
+            placeholders = f" report_date between '{start}' and '{end}' "
+            cursor = self.connection.cursor()
+            query = f"DELETE FROM {table} WHERE {placeholders}"
+            cursor.execute(query)
+            self.connection.commit()
+        except mysql.connector.Error as err:
+            print("Error:", err)
+        finally: 
+            cursor.close()
         
 
     def insert_detail(self, table, detail):
